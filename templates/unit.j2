@@ -12,7 +12,7 @@ Requires={{ docker_service }}
 {% for item in service_systemd_options %}
 {{ item['key'] }}={{ item['value'] }}
 {% endfor %}
-{% if container_env_file_defined %}
+{% if container_env is defined %}
 {% if not 'EnvironmentFile' in service_systemd_options_keys %}
 EnvironmentFile={{ sysconf_dir }}/{{ container_name }}
 {% endif %}
@@ -21,7 +21,7 @@ EnvironmentFile={{ sysconf_dir }}/{{ container_name }}
 ExecStartPre=-{{ docker_path }} rm -f {{ container_name }}
 {% endif %}
 {% if not 'ExecStart' in service_systemd_options_keys %}
-ExecStart={{ docker_path }} run --name {{ container_name }} --rm {% if container_env_file_defined %}--env-file {{ sysconf_dir }}/{{ container_name }} {% endif %}{{ params('v', container_volumes) }}{% if container_host_network == true %} --network host {% else %}{{ params('p', container_ports) }}{% endif %}{{ params('-link', container_links) }}{{ params('l', container_labels) }}{{ params('-cap-add', container_cap_add) }}{{ params('-cap-drop', container_cap_drop) }}{{ container_args | default('') |trim }} {{ container_image }} {{ container_cmd | default('') | trim }}
+ExecStart={{ docker_path }} run --name {{ container_name }} --rm {% if container_env is defined %}--env-file {{ sysconf_dir }}/{{ container_name }} {% endif %}{{ params('v', container_volumes) }}{% if container_host_network == true %} --network host {% else %}{{ params('p', container_ports) }}{% endif %}{{ params('-link', container_links) }}{{ params('l', container_labels) }}{{ params('-cap-add', container_cap_add) }}{{ params('-cap-drop', container_cap_drop) }}{{ container_args | default('') |trim }} {{ container_image }} {{ container_cmd | default('') | trim }}
 {% endif %}
 {% if not 'ExecStop' in service_systemd_options_keys %}
 ExecStop={{ docker_path }} stop {{ container_name }}
