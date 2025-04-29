@@ -6,7 +6,7 @@
     owner: root
     group: root
     mode: '0600'
-  when: container_env is defined
+  when: container_env_file_defined
   notify: restart container {{ container_name }}
 
 - name: Pull image {{ container_image }}

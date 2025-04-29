@@ -17,3 +17,6 @@ service_state: started
 service_restart: true
 template_env_path: "env.j2"
 template_unit_path: "unit.j2"
+
+docker_service: "docker.service"
+container_env_file_defined: "{{ container_env is defined or container_env_common is defined }}" 
