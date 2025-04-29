@@ -17,6 +17,9 @@ Requires={{ docker_service }}
 EnvironmentFile={{ sysconf_dir }}/{{ container_name }}
 {% endif %}
 {% endif %}
+{% for k,v in container_systemd_env | default({}) | dictsort %}
+Environment={{ k }}={{ v }}
+{% endfor %}
 {% if not 'ExecStartPre' in service_systemd_options_keys %}
 ExecStartPre=-{{ docker_path }} rm -f {{ container_name }}
 {% endif %}
